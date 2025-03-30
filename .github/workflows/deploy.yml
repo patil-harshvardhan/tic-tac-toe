@@ -5,12 +5,15 @@ on:
     branches:
       - main  # Deploy when pushing to the `main` branch (change to `master` if needed)
 
+permissions:
+  contents: write  # Allows GitHub token to push content
+  pages: write     # Allows pushing to GitHub Pages
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # Check out the repository
+      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -18,7 +21,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '23'  # Set the Node.js version
+          node-version: '23'
 
       # Install dependencies
       - name: Install dependencies
@@ -28,9 +31,9 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      # Deploy to GitHub Pages using peaceiris actions-gh-pages
+      # Deploy to GitHub Pages using peaceiris/actions-gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # Uses the GitHub token for authentication
-          publish_dir: ./dist  # Path to your build folder, typically `./dist` for Vite
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist  # Path to your build folder
