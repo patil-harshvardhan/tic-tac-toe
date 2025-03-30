@@ -1,39 +1,38 @@
-name: Deploy Vite App to GitHub Pages
+name: Build and Deploy React App
 
 on:
   push:
-    branches:
-      - main  # Deploy when pushing to the `main` branch (change to `master` if needed)
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 permissions:
-  contents: write  # Allows GitHub token to push content
-  pages: write     # Allows pushing to GitHub Pages
+  contents: write
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      # Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout the code
+      uses: actions/checkout@v4
 
-      # Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '23'
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18.x
+        cache: 'npm'
 
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm ci
 
-      # Build the app
-      - name: Build the app
-        run: npm run build
+    - name: Build the app
+      run: npm run build
+      env:
+        CI: false # Disable treating warnings as errors for the build process
 
-      # Deploy to GitHub Pages using peaceiris/actions-gh-pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist  # Path to your build folder
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build
