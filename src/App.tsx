@@ -12,7 +12,6 @@ export default function App() {
   const [userTurn, setUserTurn] = useState<State>(State.X);
   const [winner, setWinner] = useState<string | null>(null);
 
-  // Check for winner
   const checkWinner = (board: State[]) => {
     const winPatterns = [
       [0, 1, 2],
@@ -32,11 +31,10 @@ export default function App() {
         board[a] === board[b] &&
         board[a] === board[c]
       ) {
-        return board[a]; // Return the winner (either "X" or "O")
+        return board[a];
       }
     }
 
-    // Check for draw
     if (!board.includes(State.Unset)) {
       return "Draw";
     }
@@ -77,6 +75,7 @@ export default function App() {
             className="grid-item"
             key={i}
             onClick={() => handleOnClickPlay(i)}
+            data-value={b}
             style={{ cursor: winner ? "not-allowed" : "pointer" }}
           >
             {b}
