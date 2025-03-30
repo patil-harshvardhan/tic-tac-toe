@@ -31,11 +31,11 @@ jobs:
       # Set up Git identity for gh-pages deployment
       - name: Set up Git identity
         run: |
-          git config --global user.email "your-email@example.com"
-          git config --global user.name "Your GitHub Username"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
 
       # Deploy the app to GitHub Pages
       - name: Deploy to GitHub Pages
         run: npm run deploy
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Pass GITHUB_TOKEN to the deploy step
